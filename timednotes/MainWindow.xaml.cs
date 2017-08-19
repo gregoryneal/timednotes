@@ -61,10 +61,20 @@ namespace timednotes {
             mainWindow = this;
         }
 
+        /// <summary>
+        /// Creates a new empty notebook in MyDocuments
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void createNotebookBtn_Click(object sender, RoutedEventArgs e) {
             Notebook.CreateNewNotebook(notebookName.Text);
         }
 
+        /// <summary>
+        /// Deletes the currently selected notebook, there is a popup first though
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void deleteNotebookButton_Click(object sender, RoutedEventArgs e) {
             if (selectedNotebookFile == null)
                 return;
@@ -82,7 +92,9 @@ namespace timednotes {
             selectedNotebookFile = null;
         }
 
-        //Saves changes to the currently loaded notebook and loads the new notebook
+        /// <summary>
+        /// Saves changes to the currently loaded notebook and loads the new notebook
+        /// </summary>
         private void notebookListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             selectedNotebookFile = notebookListBox.SelectedItem as FileItem;
 
@@ -94,6 +106,11 @@ namespace timednotes {
             SelectedNotebook = LoadNotebookFromFile(selectedNotebookFile.Path);
         }
 
+        /// <summary>
+        /// Loads a notebook from a file given a path, parse and validate the path before you call this.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         private Notebook LoadNotebookFromFile(string path) {
             //Turn off the directoryWatcher so that no file changed/added/removed events are raised.
             directoryWatcher.EnableRaisingEvents = false;
@@ -121,6 +138,11 @@ namespace timednotes {
             return notebook;
         }
 
+        /// <summary>
+        /// Submit a new note, update the file directly and add it to the current SelectedNote so the view updates
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void submitNoteButton_Click(object sender, RoutedEventArgs e) {
             string text = textBox.Text;
 
@@ -132,6 +154,11 @@ namespace timednotes {
             ReplaceTextbox(defaultTextBox);
         }
 
+        /// <summary>
+        /// Opens the selected FileItem with the machine's default process (notepad since we use .txt)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void openNotebookFileButton_Click(object sender, RoutedEventArgs e) {
             if (notebookListBox.SelectedIndex < 0)
                 return;
@@ -140,9 +167,12 @@ namespace timednotes {
             Process.Start(path);
         }
 
-        private void textBox_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            Console.WriteLine("text box left mouse btn down");
-
+        /// <summary>
+        /// If the textbox has default text in it delete it, dont delete any text if the user has changed it
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void textBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             if (textBox.Text == defaultTextBox)
                 ReplaceTextbox(string.Empty);
         }
@@ -151,11 +181,21 @@ namespace timednotes {
             textBox.Text = newText;
         }
 
+        /// <summary>
+        /// The user didn't put anything in the textbox, so reset it to default.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBox_LostFocus(object sender, RoutedEventArgs e) {
             if (textBox.Text == string.Empty)
                 textBox.Text = defaultTextBox;
         }
 
+        /// <summary>
+        /// Updates the SelectedNote property to match the currently selected note
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void noteListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (noteListBox.SelectedIndex < 0) {
                 SelectedNote = null;
@@ -164,19 +204,13 @@ namespace timednotes {
 
             SelectedNote = noteListBox.SelectedItem as TimedNote;
             Console.WriteLine("Selection changed to " + noteListBox.SelectedIndex);
-
-            noteListBox.ColumnWidth = 0;
-            noteListBox.UpdateLayout();
-            noteListBox.ColumnWidth = new DataGridLength(1, DataGridLengthUnitType.SizeToCells);
         }
 
-        private void noteListBox_AddingNewItem(object sender, AddingNewItemEventArgs e) {
-            TimedNote item = e.NewItem as TimedNote;
-            item.Note = string.Empty;
-            item.Time = DateTime.Now;
-            Console.WriteLine("new item: " + item.Note);
-        }
-
+        /// <summary>
+        /// Called when the user clicks the button to edit the currenlty selected note
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void editNoteButton_Click(object sender, RoutedEventArgs e) {
             if (SelectedNote == null)
                 return;
@@ -185,6 +219,11 @@ namespace timednotes {
             popup.ShowDialog();
         }
 
+        /// <summary>
+        /// Called by a PopupTextInput instance to edit the currently selected note.
+        /// </summary>
+        /// <param name="editedNote"></param>
+        /// <param name="windowToClose"></param>
         public void popupTextInput_Edit(string editedNote, PopupTextInput windowToClose) {
             if (SelectedNotebook == null || SelectedNote == null)
                 return;
