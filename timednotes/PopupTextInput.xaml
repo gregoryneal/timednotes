@@ -1,0 +1,14 @@
+﻿<Window x:Class="timednotes.PopupTextInput"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:timednotes"
+        mc:Ignorable="d"
+        Title="PopupTextInput" Height="200" Width="300">
+    <Grid>
+        <Label x:Name="label" Content="Time" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="editNoteTextBox" Margin="10,36" />
+        <Button x:Name="submitEditedNoteButton" Margin="10,138,10,5" Content="save changes" Click="submitEditedNoteButton_Click" />
+    </Grid>
+</Window>
