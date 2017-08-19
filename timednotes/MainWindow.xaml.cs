@@ -89,7 +89,7 @@ namespace timednotes {
             if (notebookListBox.SelectedIndex < 0) {
                 Console.WriteLine("no item selected.");
                 return;
-            }            
+            }
 
             SelectedNotebook = LoadNotebookFromFile(selectedNotebookFile.Path);
         }
@@ -193,6 +193,21 @@ namespace timednotes {
 
             SelectedNote.Note = editedNote;
             Notebook.SaveNotebook(SelectedNotebook);
+        }
+
+        /// <summary>
+        /// Prevents certain characters from registering, this prevents errors in windows file creation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void notebookName_PreviewTextInput(object sender, TextCompositionEventArgs e) {
+            List<string> illegal = new List<string>() { "<", ">", ":", "\"", "/", "\\", "|", "?", "*", };
+
+            Console.WriteLine(e.Text);
+
+            if (illegal.Contains(e.Text.ToLower())) {
+                e.Handled = true;
+            }
         }
     }
 }
