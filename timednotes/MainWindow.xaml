@@ -61,6 +61,7 @@
                 <Label x:Name="editNotebookLabel" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#FFC0FFC9" Content="notebook options" Height="27" FontSize="9" Grid.Row="0" Grid.Column="1" />
                 <StackPanel x:Name="stackPanel1" Orientation="Vertical" Grid.Row="1" Grid.Column="1" CanVerticallyScroll="True">
                     <Button x:Name="openNotebookFileButton" Content="open file" HorizontalAlignment="Center" Margin="0,5,0,0" Width="75" Click="openNotebookFileButton_Click"/>
+                    <Button x:Name="openFolderButton" Content="open folder" Width="75" Margin="0,5,0,0" Click="openFolderButton_Click"/>
                     <Button x:Name="deleteNotebookButton" Content="delete" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Height="21" Click="deleteNotebookButton_Click" Foreground="White" Margin="0,5,0,0" Background="#FFA40000"/>
                 </StackPanel>
 

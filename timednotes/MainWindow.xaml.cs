@@ -37,7 +37,12 @@ namespace timednotes {
             private set {
                 _selectedNotebook = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedNotebook"));
-                SelectedNotebook.Save();
+
+                try {
+                    SelectedNotebook.Save();
+                } catch (NullReferenceException) {
+                    //the notebook was deleted and not just updated
+                }
             }
         }
 
@@ -268,6 +273,10 @@ namespace timednotes {
             if (illegal.Contains(e.Text.ToLower())) {
                 e.Handled = true;
             }
+        }
+
+        private void openFolderButton_Click(object sender, RoutedEventArgs e) {
+            Process.Start(saveDirectory);
         }
     }
 }
