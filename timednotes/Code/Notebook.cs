@@ -11,15 +11,13 @@ namespace timednotes {
         //Define the localization for the time display
         public static CultureInfo defaultCulture = CultureInfo.InvariantCulture;
 
-        private ObservableCollection<TimedNote> _notes = new ObservableCollection<TimedNote>();
-
         public event PropertyChangedEventHandler PropertyChanged;
+        private ObservableCollection<TimedNote> _notes = new ObservableCollection<TimedNote>();
 
         public ObservableCollection<TimedNote> Notes {
             get { return _notes; }
             set {
                 _notes = value;
-
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Notes"));
             }
         }
@@ -29,6 +27,7 @@ namespace timednotes {
         public Notebook(string name) {
 
             this.Name = name;
+            PropertyChanged += new PropertyChangedEventHandler(Save);
         }
 
 
@@ -66,13 +65,34 @@ namespace timednotes {
             Notes.Add(note);
         }
 
+        /// <summary>
+        /// Removes the first note recorded at the specified time from the Notes list.
+        /// </summary>
+        /// <param name="time"></param>
+        public void RemoveNoteByTime(DateTime time) {
+            for (int i = 0; i < Notes.Count; i++) {
+                if (Notes[i].Time.CompareTo(time) == 0) {
+                    Notes.RemoveAt(i);
+                    Save();
+                    return;
+                }
+            }
+            Save();
+        }
+
         //Deletes the file if it exists and resaves a new one like it
+        public void Save(object s, PropertyChangedEventArgs args) {
+            Save();
+        }
+
         public void Save() {
             SaveNotebook(this);
         }
 
         //Saves a notebook to a file, replaces the existing one if replaceExisting is true, otherwise if the file exists it will terminate execution
         public static void SaveNotebook(Notebook notebook) {
+            Console.WriteLine("Saving");
+
             MainWindow.directoryWatcher.EnableRaisingEvents = false;
 
             string filePath = Path.Combine(MainWindow.saveDirectory, MainWindow.filePrefix + notebook.Name + ".txt");

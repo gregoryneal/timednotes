@@ -37,6 +37,7 @@ namespace timednotes {
             private set {
                 _selectedNotebook = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedNotebook"));
+                SelectedNotebook.Save();
             }
         }
 
@@ -44,6 +45,9 @@ namespace timednotes {
         public TimedNote SelectedNote {
             get { return _selectedNote; }
             private set {
+
+                Console.WriteLine("Shit's goin down");
+
                 _selectedNote = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedNote"));
             }
@@ -90,6 +94,23 @@ namespace timednotes {
             //delete the file from the directory
             File.Delete(selectedNotebookFile.Path);
             selectedNotebookFile = null;
+        }
+
+        /// <summary>
+        /// Deletes the note from the selected notebook, automatically saves, fuck u if u fuck up boi haha
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void deleteNoteButton_Click(object sender, RoutedEventArgs e) {
+            DeleteSelectedNoteFromSelectedNotebook();
+        }
+
+        void DeleteSelectedNoteFromSelectedNotebook() {
+            if (SelectedNote == null || SelectedNotebook == null)
+                return;
+
+            Console.WriteLine("delete button pressed");
+            SelectedNotebook.RemoveNoteByTime(SelectedNote.Time);
         }
 
         /// <summary>

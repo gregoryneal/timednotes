@@ -53,16 +53,26 @@
                     <RowDefinition Height="17*"/>
                     <RowDefinition Height="62*"/>
                 </Grid.RowDefinitions>
-                <Label x:Name="editSectionLabel" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#FFC0FFC9" Content="notebook options" Height="20" Margin="0" FontSize="9" Grid.RowSpan="2" />
-                <Button x:Name="deleteNotebookButton" Content="delete" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="21" Margin="163,36,0,0" Grid.Row="1" Click="deleteNotebookButton_Click" Background="#FFA40000" Foreground="White"/>
-                <Button x:Name="openNotebookFileButton" Content="open file" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,37,0,0" Grid.Row="1" Click="openNotebookFileButton_Click"/>
-                <Button x:Name="editNoteButton" Content="edit note" HorizontalAlignment="Left" Margin="10,12,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" IsEnabled="{Binding SelectedNote, Converter={StaticResource ObjectNullCheckToBooleanConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" Click="editNoteButton_Click"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*"/>
+                    <ColumnDefinition Width="50*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="editNoteLabel" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#FFC0FFC9" Content="selected note options" Height="27" FontSize="9" Grid.Row="0" Grid.Column="0" />
+                <Label x:Name="editNotebookLabel" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#FFC0FFC9" Content="notebook options" Height="27" FontSize="9" Grid.Row="0" Grid.Column="1" />
+                <StackPanel x:Name="stackPanel1" Orientation="Vertical" Grid.Row="1" Grid.Column="1" CanVerticallyScroll="True">
+                    <Button x:Name="openNotebookFileButton" Content="open file" HorizontalAlignment="Center" Margin="0,5,0,0" Width="75" Click="openNotebookFileButton_Click"/>
+                    <Button x:Name="deleteNotebookButton" Content="delete" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Height="21" Click="deleteNotebookButton_Click" Foreground="White" Margin="0,5,0,0" Background="#FFA40000"/>
+                </StackPanel>
+
+                <StackPanel x:Name="stackPanel2" Orientation="Vertical" Grid.Row="1" Grid.Column="0" CanVerticallyScroll="True">
+                    <Button x:Name="editNoteButton" Content="edit note" HorizontalAlignment="Center" Margin="0,5,0,0" Width="75" IsEnabled="{Binding SelectedNote, Converter={StaticResource ObjectNullCheckToBooleanConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" Click="editNoteButton_Click"/>
+                    <Button x:Name="deleteNoteButton" Content="delete note" HorizontalAlignment="Center" Margin="0,5,0,0" Width="75" IsEnabled="{Binding SelectedNote, Converter={StaticResource ObjectNullCheckToBooleanConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" Click="deleteNoteButton_Click" Background="#FFA40000" Foreground="White"/>
+                </StackPanel>
             </Grid>
         </Border>
         <Label x:Name="label1" Content="double click time column to edit note" HorizontalAlignment="Center" VerticalAlignment="Top" Width="Auto" Grid.RowSpan="2" Height="26"/>
-        <DataGrid x:Name="noteListBox" VerticalAlignment="Stretch" AutoGenerateColumns="False" ItemsSource="{Binding Path=SelectedNotebook.Notes}" SelectionChanged="noteListBox_SelectionChanged" FrozenColumnCount="1" Grid.Row="1" Margin="10,5" GridLinesVisibility="None" CanUserResizeColumns="False" CanUserResizeRows="False" MinHeight="109" RowHeaderWidth="NaN">
-            <DataGrid.Columns>           
-                
+        <DataGrid x:Name="noteListBox" VerticalAlignment="Stretch" AutoGenerateColumns="False" ItemsSource="{Binding SelectedNotebook.Notes, Mode=TwoWay}" SelectionChanged="noteListBox_SelectionChanged" CanUserDeleteRows="False" FrozenColumnCount="1" Grid.Row="1" Margin="10,5" GridLinesVisibility="None" CanUserResizeColumns="False" CanUserResizeRows="False" MinHeight="109" RowHeaderWidth="NaN">
+            <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Time" Width="SizeToCells" IsReadOnly="True" MinWidth="36">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
